@@ -1,0 +1,77 @@
+@baseUrl = http://localhost:3000/api/reservas
+
+### ==========================================
+### CASOS DE ÉXITO (Happy Path)
+### ==========================================
+
+### 1. Obtener todas las reservas (Esperado: 200 OK - Con nombres gracias al JOIN!)
+GET {{baseUrl}}
+
+### 2. Obtener una reserva existente por ID (Esperado: 200 OK)
+GET {{baseUrl}}/1
+
+### 3. Crear una reserva válida (Usuario 1 reserva Espacio 2 - Pádel)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "usuario_id": 1,
+ "espacio_id": 2,
+ "fecha": "2024-11-20",
+ "hora_inicio": "17:00",
+ "hora_fin": "18:30"
+}
+
+### 4. Cancelar una reserva existente (Esperado: 200 OK)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+ "estado": "cancelada"
+}
+
+### 5. Borrar una reserva (Esperado: 204 No Content)
+DELETE {{baseUrl}}/2
+
+
+### ==========================================
+### CASOS DE ERROR Y LÓGICA DE NEGOCIO
+### ==========================================
+
+### 6. Crear reserva con usuario que NO existe (Esperado: 404 Not Found)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "usuario_id": 999,
+ "espacio_id": 1,
+ "fecha": "2024-11-20",
+ "hora_inicio": "10:00",
+ "hora_fin": "11:00"
+}
+
+### 7. Crear reserva en espacio CERRADO (ID 3 - Gimnasio) (Esperado: 400 Bad Request)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "usuario_id": 1,
+ "espacio_id": 3,
+ "fecha": "2024-11-20",
+ "hora_inicio": "10:00",
+ "hora_fin": "11:00"
+}
+
+### 8. DOBLE RESERVA: Mismo espacio, fecha y hora (Esperado: 409 Conflict)
+# En database.js insertamos una reserva para la Piscina (ID 1) el 2024-10-15 a las 10:00
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "usuario_id": 2,
+ "espacio_id": 1,
+ "fecha": "2024-10-15",
+ "hora_inicio": "10:00",
+ "hora_fin": "11:00"
+}
+

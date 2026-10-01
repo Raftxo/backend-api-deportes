@@ -1,0 +1,80 @@
+@baseUrl = http://localhost:3000/api/usuarios
+
+### ==========================================
+### CASOS DE ÉXITO (Happy Path)
+### ==========================================
+
+### 1. Obtener todos los usuarios (Esperado: 200 OK - ¡Sin contraseñas!)
+GET {{baseUrl}}
+
+### 2. Obtener un usuario existente por ID (Esperado: 200 OK)
+GET {{baseUrl}}/1
+
+### 3. Crear un usuario ciudadano (Esperado: 201 Created)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "nombre": "Laura Martínez",
+ "email": "laura@email.com",
+ "password": "secreto123"
+}
+
+### 4. Crear un usuario administrador (Esperado: 201 Created)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "nombre": "Jefe Deportes",
+ "email": "jefe@ayto.com",
+ "password": "admin123",
+ "rol": "admin"
+}
+
+### 5. Actualizar el nombre de un usuario (Esperado: 200 OK)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+ "nombre": "Ana García López"
+}
+
+### 6. Borrar un usuario (Ej: ID 2) (Esperado: 204 No Content)
+DELETE {{baseUrl}}/2
+
+
+### ==========================================
+### CASOS DE ERROR Y VALIDACIONES
+### ==========================================
+
+### 7. Obtener un usuario que NO existe (Esperado: 404 Not Found)
+GET {{baseUrl}}/9999
+
+### 8. Crear usuario faltando campos obligatorios (Esperado: 400 Bad Request)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "nombre": "Pepito"
+}
+
+### 9. Crear usuario con email DUPLICADO (Esperado: 409 Conflict)
+# Usamos el email de Ana que insertamos en database.js
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+ "nombre": "Otra Ana",
+ "email": "ana@email.com",
+ "password": "otra123"
+}
+
+### 10. Actualizar usuario poniendo un email que ya existe (Esperado: 409 Conflict)
+# Intentamos ponerle a Laura (ID 4) el email de Ana
+PUT {{baseUrl}}/4
+Content-Type: application/json
+
+{
+ "email": "ana@email.com"
+}
+

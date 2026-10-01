@@ -1,5 +1,7 @@
 import express from 'express';
 import espaciosRouter from './routes/espacios.routes.js'; 
+import usuariosRouter from "./routes/usuarios.routes.js";
+import reservasRouter from './routes/reservas.routes.js';
 
 // 1. Inicializamos la aplicación de Express
 const app = express();
@@ -17,6 +19,8 @@ app.get('/', (req, res) => {
     });
 });
 app.use('/api/espacios', espaciosRouter);
+app.use('/api/usuarios', usuariosRouter);
+app.use('/api/reservas', reservasRouter);
 
 // 5. Arrancamos el servidor para que escuche peticiones en el puerto indicado
 app.listen(PORT, () => {
