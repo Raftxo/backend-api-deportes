@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from "cors"
 import espaciosRouter from './routes/espacios.routes.js'; 
 import usuariosRouter from "./routes/usuarios.routes.js";
 import reservasRouter from './routes/reservas.routes.js';
@@ -11,6 +12,7 @@ const PORT = 3000;
 
 // 3. Middleware: Le decimos a Express que sepa entender los datos en formato JSON
 app.use(express.json());
+app.use(cors());
 
 // 4. Creamos una ruta de prueba (GET) en la raíz para comprobar que funciona
 app.get('/', (req, res) => {
