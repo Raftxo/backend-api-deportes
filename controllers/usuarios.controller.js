@@ -1,4 +1,5 @@
 import db from '../database.js';
+import bcrypt from 'bcryptjs';
 
 // OBTENER TODOS LOS USUARIOS (GET) - ¡SIN CONTRASEÑAS!
 export const getUsuarios = (req, res) => {
@@ -36,13 +37,16 @@ export const createUsuario = (req, res) => {
         if (!nombre || !email || !password) {
             return res.status(400).json({ error: 'Faltan campos obligatorios (nombre, email, password)' });
         }
+        // HASHEAMOS LA CONTRASEÑA ANTES DE GUARDARLA
+       const passwordHash = bcrypt.hashSync(password, 10);
+
 
         const stmt = db.prepare(
             'INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)'
         );
         
         // Si no se especifica rol, por defecto será 'ciudadano'
-        const result = stmt.run(nombre, email, password, rol || 'ciudadano');
+        const result = stmt.run(nombre, email, passwordHash, rol || 'ciudadano');
         
         const nuevoUsuario = db.prepare('SELECT id, nombre, email, rol FROM usuarios WHERE id = ?').get(result.lastInsertRowid);
         res.status(201).json(nuevoUsuario);

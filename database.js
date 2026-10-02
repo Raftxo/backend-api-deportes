@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import bcrypt from 'bcryptjs';
 // Conectar/Crear la base de datos local
 const db = new Database('ayto_deportes.db');
 
@@ -56,12 +57,16 @@ const checkUsers = db.prepare('SELECT COUNT(*) AS count FROM usuarios').get();
 
 if (checkUsers.count === 0) {
  console.log('Insertando datos de ejemplo...');
+ // Hasheamos las contraseñas antes de insertarlas
+ const passCiudadano = bcrypt.hashSync('1234', 10); // El 10 es el "salt"
+ const passAdmin = bcrypt.hashSync('admin123', 10);
+
 
  // Insertamos usuarios
  const insertUser = db.prepare('INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)');
- insertUser.run('Ana García', 'ana@email.com', '1234', 'ciudadano');
- insertUser.run('Carlos López', 'carlos@email.com', '1234', 'ciudadano');
- insertUser.run('Admin Ayto', 'admin@ayto.com', 'admin123', 'admin');
+ insertUser.run('Ana García', 'ana@email.com', passCiudadano, 'ciudadano');
+ insertUser.run('Carlos López', 'carlos@email.com', passCiudadano, 'ciudadano');
+ insertUser.run('Admin Ayto', 'admin@ayto.com', passAdmin, 'admin');
 
  // Insertamos espacios
  const insertEspacio = db.prepare('INSERT INTO espacios (nombre, tipo, ubicacion, capacidad_maxima, disponible) VALUES (?, ?, ?, ?, ?)');

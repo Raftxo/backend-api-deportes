@@ -1,0 +1,54 @@
+@baseUrl = http://localhost:3000/api/auth
+@usuariosUrl = http://localhost:3000/api/usuarios
+
+### ==========================================
+### 1. REGISTRAR UN NUEVO USUARIO (Para probar el hash)
+### ==========================================
+POST {{usuariosUrl}}
+Content-Type: application/json
+
+{
+ "nombre": "Nuevo Ciudadano",
+ "email": "nuevo@email.com",
+ "password": "miPasswordSeguro"
+}
+
+
+### ==========================================
+### 2. LOGIN CON ÉXITO (Usando datos del seed)
+### ==========================================
+# Devolverá el Token JWT
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+ "email": "ana@email.com",
+ "password": "1234"
+}
+
+
+### ==========================================
+### 3. LOGIN CON CONTRASEÑA INCORRECTA
+### ==========================================
+# Esperado: 401 Unauthorized
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+ "email": "ana@email.com",
+ "password": "contraseñaErronea"
+}
+
+
+### ==========================================
+### 4. LOGIN CON USUARIO QUE NO EXISTE
+### ==========================================
+# Esperado: 404 Not Found
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+ "email": "fantasma@email.com",
+ "password": "1234"
+}
+
