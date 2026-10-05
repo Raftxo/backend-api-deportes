@@ -15,10 +15,10 @@ POST {{baseUrl}}
 Content-Type: application/json
 
 {
-  "nombre": "Pista de Atletismo Municipal",
-  "tipo": "Atletismo",
+  "nombre": "Baño Turco",
+  "tipo": "Spa",
   "ubicacion": "Av. de los Deportes s/n",
-  "capacidad_maxima": 200,
+  "capacidad_maxima": 10,
   "disponible": 1
 }
 

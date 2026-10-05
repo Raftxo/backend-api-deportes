@@ -1,0 +1,71 @@
+@baseUrl = http://localhost:3000/api
+@authUrl = {{baseUrl}}/auth
+@espaciosUrl = {{baseUrl}}/espacios
+
+### ==========================================
+### 1. INTENTAR CREAR UN ESPACIO SIN LOGIN
+### ==========================================
+### Esperado: 401 Unauthorized (No hay token)
+POST {{espaciosUrl}}
+Content-Type: application/json
+
+{
+ "nombre": "Pista Ilegal",
+ "tipo": "Tenis",
+ "ubicacion": "C/ Falsa",
+ "capacidad_maxima": 5
+}
+
+
+### ==========================================
+### 2. HACER LOGIN COMO ADMIN
+### ==========================================
+### Esperado: 200 OK y Token JWT
+# @name loginAdmin
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+ "email": "admin@ayto.com",
+ "password": "admin123"
+}
+
+
+### ==========================================
+### 3. CREAR ESPACIO COMO ADMIN (Usando el token)
+### ==========================================
+### Copia el token que te devolvió el paso 2 y ponlo donde dice PEGA_AQUI_EL_TOKEN
+POST {{espaciosUrl}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sIjoiYWRtaW4iLCJpYXQiOjE3OTEyMjY2NTMsImV4cCI6MTc5MTIzMzg1M30.PirrjEt8bSsUkZMVZn3dCfn9B_qozy494HryMecE63s
+Content-Type: application/json
+
+{
+ "nombre": "Pista de Tenis Municipal",
+ "tipo": "Tenis",
+ "ubicacion": "Polideportivo Oeste",
+ "capacidad_maxima": 4
+}
+
+
+### ==========================================
+### 4. HACER LOGIN COMO CIUDADANO
+### ==========================================
+### Esperado: 200 OK y Token JWT
+# @name loginCiudadano
+POST {{authUrl}}/login
+Content-Type: application/json
+
+{
+ "email": "ana@email.com",
+ "password": "1234"
+}
+
+
+### ==========================================
+### 5. INTENTAR BORRAR UN ESPACIO SIENDO CIUDADANO
+### ==========================================
+### Copia el token del ciudadano (paso 4).
+### Esperado: 403 Forbidden (Tiene token, pero no es admin)
+DELETE {{espaciosUrl}}/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiY2l1ZGFkYW5vIiwiaWF0IjoxNzkxMjI2Nzk4LCJleHAiOjE3OTEyMzM5OTh9.V_5nkHvSCtCRcNedp3JAZKEHuElF8Ai-JsA_kBgXtQc
+
