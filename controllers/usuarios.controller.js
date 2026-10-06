@@ -1,6 +1,8 @@
 import db from '../database.js';
 import bcrypt from 'bcryptjs';
 
+// falta actualizar según el manual: https://docs.google.com/document/d/1hADGNTRqQ2Ub8HQwCG_F4yrx1etM6rCMEhBN0F3UEgc/edit?tab=t.0#heading=h.1waulj19bctz
+
 // OBTENER TODOS LOS USUARIOS (GET) - ¡SIN CONTRASEÑAS!
 export const getUsuarios = (req, res) => {
     try {
