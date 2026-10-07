@@ -15,7 +15,6 @@ POST {{baseUrl}}
 Content-Type: application/json
 
 {
- "usuario_id": 2,
  "espacio_id": 2,
  "fecha": "2026-10-05",
  "hora_inicio": "17:00",
