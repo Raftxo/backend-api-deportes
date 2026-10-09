@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f2">
+  <meta name="description" content="API de Espacios Deportivos del Ayuntamiento: espacios, reservas y acceso a la documentación para desarrolladores.">
+  <title>Deporte para todos · API municipal</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172d27;
+      --muted: #65746c;
+      --green: #206b4c;
+      --lime: #c9ed76;
+      --paper: #f5f7f2;
+      --line: #e5eae2;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); }
+    a { color: inherit; text-decoration: none; }
+    .shell { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+
+    .topbar { height: 82px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 15px; font-weight: 750; letter-spacing: -.03em; }
+    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 13px; background: var(--green); color: white; }
+    .brand-mark svg { width: 22px; }
+    .nav { display: flex; align-items: center; gap: 30px; color: #51645a; font-size: 13px; font-weight: 650; }
+    .nav a:hover { color: var(--green); }
+    .nav .nav-cta { padding: 11px 17px; border: 1px solid #d8e0d5; border-radius: 999px; color: var(--ink); background: #fff; }
+
+    .hero { position: relative; display: grid; grid-template-columns: 1.06fr .94fr; align-items: center; gap: 55px; min-height: 525px; padding: 58px 7.4%; overflow: hidden; border-radius: 28px; background: #173b31; color: white; }
+    .hero::before, .hero::after { position: absolute; content: ""; border: 1px solid rgba(214, 244, 188, .13); border-radius: 50%; pointer-events: none; }
+    .hero::before { width: 500px; height: 500px; right: -176px; top: -236px; }
+    .hero::after { width: 390px; height: 390px; right: -120px; top: -180px; }
+    .hero-copy, .hero-art { position: relative; z-index: 1; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--lime); font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .eyebrow::before { width: 7px; height: 7px; content: ""; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 5px rgba(201, 237, 118, .13); }
+    h1 { max-width: 570px; margin: 22px 0 18px; font-size: clamp(42px, 5.1vw, 66px); line-height: .99; letter-spacing: -.065em; }
+    h1 span { color: var(--lime); }
+    .hero-copy > p { max-width: 440px; margin: 0; color: #c2d2ca; font-size: 16px; line-height: 1.7; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 0 19px; border-radius: 999px; font-size: 13px; font-weight: 750; transition: transform .2s, background .2s; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { background: var(--lime); color: #18372b; }
+    .button-primary:hover { background: #d8f69a; }
+    .button-quiet { border: 1px solid rgba(255,255,255,.24); color: white; }
+    .button svg { width: 16px; height: 16px; }
+
+    .hero-art { display: flex; justify-content: center; }
+    .court-card { position: relative; width: min(100%, 390px); aspect-ratio: 1.08; padding: 18px; transform: rotate(2deg); border: 1px solid rgba(255,255,255,.24); border-radius: 23px; background: rgba(255,255,255,.08); box-shadow: 0 28px 70px rgba(4, 21, 16, .25); backdrop-filter: blur(8px); }
+    .court { position: relative; display: grid; width: 100%; height: 100%; place-items: center; overflow: hidden; border: 2px solid rgba(226, 245, 218, .75); border-radius: 13px; background: linear-gradient(135deg, #7eaa66, #54835d); }
+    .court::before { position: absolute; width: 100%; height: 2px; content: ""; background: rgba(245,255,235,.76); }
+    .court::after { position: absolute; width: 34%; aspect-ratio: 1; content: ""; border: 2px solid rgba(245,255,235,.76); border-radius: 50%; }
+    .court-box { position: absolute; top: 0; width: 48%; height: 22%; border: 2px solid rgba(245,255,235,.76); border-top: 0; }
+    .court-box.bottom { top: auto; bottom: 0; border: 2px solid rgba(245,255,235,.76); border-bottom: 0; }
+    .court-dot { position: absolute; z-index: 1; width: 13px; height: 13px; border: 3px solid white; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 8px rgba(201,237,118,.2); }
+    .floating-tag { position: absolute; right: -20px; bottom: 25px; display: flex; align-items: center; gap: 11px; padding: 13px 16px; border-radius: 15px; background: white; color: var(--ink); box-shadow: 0 15px 40px rgba(4,21,16,.2); transform: rotate(-2deg); }
+    .tag-icon { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 11px; background: #eff8df; color: var(--green); }
+    .tag-icon svg { width: 19px; }
+    .tag-copy strong, .tag-copy span { display: block; }
+    .tag-copy strong { font-size: 12px; }
+    .tag-copy span { margin-top: 3px; color: var(--muted); font-size: 10px; }
+
+    .intro { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding: 87px 0 30px; }
+    .section-label { color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h2 { margin: 11px 0 0; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -.055em; }
+    .intro p { max-width: 370px; margin: 0 0 3px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature { min-height: 224px; padding: 25px; border: 1px solid var(--line); border-radius: 19px; background: #fff; transition: transform .2s, box-shadow .2s; }
+    .feature:hover { transform: translateY(-4px); box-shadow: 0 14px 35px rgba(28, 57, 42, .08); }
+    .feature-icon { display: grid; width: 44px; height: 44px; place-items: center; border-radius: 14px; background: #eef5e7; color: var(--green); }
+    .feature-icon svg { width: 22px; height: 22px; }
+    .feature h3 { margin: 22px 0 8px; font-size: 17px; letter-spacing: -.025em; }
+    .feature p { max-width: 290px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+    .api-strip { display: flex; justify-content: space-between; align-items: center; gap: 28px; margin: 70px 0 62px; padding: 31px 36px; border-radius: 20px; background: #eaf1e7; }
+    .api-strip h2 { margin: 0; font-size: 22px; }
+    .api-strip p { margin: 7px 0 0; color: var(--muted); font-size: 13px; }
+    .endpoint { flex: 0 0 auto; padding: 12px 16px; border: 1px solid #d4e0d1; border-radius: 10px; background: rgba(255,255,255,.72); color: #486153; font: 12px ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .endpoint b { margin-right: 10px; color: var(--green); }
+    footer { padding: 23px 0 30px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 16px; }
+    .footer-inner a { color: var(--green); font-weight: 700; }
+
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr .8fr; gap: 24px; padding: 48px 6%; }
+      .court-card { padding: 12px; }
+      .floating-tag { right: -12px; }
+      .features { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .shell { width: min(100% - 32px, 440px); }
+      .topbar { height: 70px; }
+      .nav { gap: 12px; }
+      .nav > a:first-child { display: none; }
+      .nav .nav-cta { padding: 10px 13px; }
+      .hero { grid-template-columns: 1fr; gap: 42px; min-height: 0; padding: 43px 25px 32px; border-radius: 22px; }
+      h1 { font-size: clamp(43px, 13vw, 60px); }
+      .hero-copy > p { font-size: 14px; }
+      .hero-art { padding: 0 9px 12px 0; }
+      .court-card { width: min(100%, 330px); }
+      .intro { display: block; padding: 65px 0 24px; }
+      .intro p { margin-top: 12px; }
+      .features { grid-template-columns: 1fr; gap: 11px; }
+      .feature { min-height: 0; padding: 21px; }
+      .feature h3 { margin-top: 16px; }
+      .api-strip { align-items: flex-start; flex-direction: column; margin: 48px 0; padding: 25px; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell topbar">
+    <a class="brand" href="/" aria-label="API municipal de deportes, inicio">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 17.5 8.2 6l3.8 11.5L15.8 6 20 17.5M5.2 14h13.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span>DEPORTES <span style="font-weight:500;color:#718077">· API MUNICIPAL</span></span>
+    </a>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#funciones">Funciones</a>
+      <a class="nav-cta" href="/api-docs">Documentación <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="shell hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow">Espacios deportivos municipales</span>
+        <h1 id="hero-title">Tu ciudad,<br><span>en movimiento.</span></h1>
+        <p>Una API para acercar el deporte a las personas. Consulta instalaciones, gestiona reservas y conecta tus aplicaciones con los servicios deportivos municipales.</p>
+        <div class="actions">
+          <a class="button button-primary" href="/api-docs">
+            Explorar la API
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="button button-quiet" href="#funciones">Descubrir funciones</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="court-card">
+          <div class="court">
+            <span class="court-box"></span>
+            <span class="court-box bottom"></span>
+            <span class="court-dot"></span>
+          </div>
+          <div class="floating-tag">
+            <span class="tag-icon">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M8 3.5v3M16 3.5v3M3.5 10h17m-12 4 2.2 2.2 4.8-4.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="tag-copy"><strong>Reserva tu espacio</strong><span>El deporte, más cerca</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell" id="funciones" aria-labelledby="features-title">
+      <div class="intro">
+        <div>
+          <span class="section-label">Todo lo que necesitas</span>
+          <h2 id="features-title">De la instalación a la reserva.</h2>
+        </div>
+        <p>Servicios sencillos para que ciudadanía y aplicaciones encuentren su próximo lugar para hacer deporte.</p>
+      </div>
+      <div class="features">
+        <article class="feature">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3.5 20.5h17M5 20V9l7-5 7 5v11M9 20v-6h6v6M8.5 10h.01M15.5 10h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>Espacios deportivos</h3>
+          <p>Consulta instalaciones, características, ubicación y disponibilidad. Encuentra el espacio que buscas.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M8 3.5v3M16 3.5v3M3.5 10h17m3.5 4h.01M8.5 14h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </span>
+          <h3>Reservas</h3>
+          <p>Crea y consulta reservas de espacios en una fecha y horario, con acceso autenticado para las operaciones personales.</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 19 6v5.5c0 4.2-2.8 7.4-7 9-4.2-1.6-7-4.8-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>Acceso seguro</h3>
+          <p>Inicia sesión y accede a operaciones protegidas mediante autenticación con token y permisos de administración.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell api-strip" aria-label="Acceso al endpoint de espacios">
+      <div>
+        <h2>Lista para integrarse.</h2>
+        <p>Empieza explorando los espacios deportivos disponibles.</p>
+      </div>
+      <a class="endpoint" href="/api/espacios"><b>GET</b>/api/espacios</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>API de Espacios Deportivos del Ayuntamiento</span>
+      <span>¿Desarrollas una integración? <a href="/api-docs">Consulta la documentación ↗</a></span>
+    </div>
+  </footer>
+</body>
+</html>
