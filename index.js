@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { PORT } from './config.js';
 import cors from "cors"
 import espaciosRouter from './routes/espacios.routes.js'; 
 import usuariosRouter from "./routes/usuarios.routes.js";
@@ -12,9 +13,6 @@ import swaggerSpec from './swagger.js';
 // 1. Inicializamos la aplicación de Express
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// 2. Definimos el puerto donde correrá nuestro servidor
-const PORT = 3000;
 
 // 3. Middleware: Le decimos a Express que sepa entender los datos en formato JSON
 app.use(express.json());

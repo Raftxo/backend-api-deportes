@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
-
-// El mismo secreto que usamos en auth.controller.js
-const JWT_SECRET = 'ayto_deportes_super_secreto';
+import { JWT_SECRET } from '../config.js';
 
 // ==========================================
 // MIDDLEWARE 1: EL común para todos

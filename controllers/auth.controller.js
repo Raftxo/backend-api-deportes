@@ -1,9 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import db from '../database.js';
-
-// Clave secreta para firmar el JWT (En producción debería ir en un archivo .env)
-const JWT_SECRET = 'ayto_deportes_super_secreto';
+import { JWT_SECRET } from '../config.js';
 
 export const login = (req, res) => {
    try {
@@ -50,4 +48,3 @@ export const login = (req, res) => {
        res.status(500).json({ error: 'Error en el servidor al hacer login' });
    }
 };
-

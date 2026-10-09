@@ -1,7 +1,8 @@
 import Database from 'better-sqlite3';
 import bcrypt from 'bcryptjs';
+import { DB_NAME } from './config.js';
 // Conectar/Crear la base de datos local
-const db = new Database('ayto_deportes.db');
+const db = new Database(DB_NAME);
 
 // Configuraciones recomendadas para SQLite
 db.pragma('journal_mode = WAL'); // Mejora el rendimiento
