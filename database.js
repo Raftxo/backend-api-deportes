@@ -1,6 +1,11 @@
 import Database from 'better-sqlite3';
 import bcrypt from 'bcryptjs';
+import { mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { DB_NAME } from './config.js';
+
+mkdirSync(dirname(DB_NAME), { recursive: true });
+
 // Conectar/Crear la base de datos local
 const db = new Database(DB_NAME);
 
