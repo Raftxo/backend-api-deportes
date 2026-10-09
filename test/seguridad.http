@@ -2,6 +2,8 @@
 @authUrl = {{baseUrl}}/auth
 @espaciosUrl = {{baseUrl}}/espacios
 
+@verificarUrl = {{baseUrl}}/reservas/verificar/4
+
 ### ==========================================
 ### 1. INTENTAR CREAR UN ESPACIO SIN LOGIN
 ### ==========================================
@@ -69,3 +71,9 @@ Content-Type: application/json
 DELETE {{espaciosUrl}}/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiY2l1ZGFkYW5vIiwiaWF0IjoxNzkxMjI2Nzk4LCJleHAiOjE3OTEyMzM5OTh9.V_5nkHvSCtCRcNedp3JAZKEHuElF8Ai-JsA_kBgXtQc
 
+
+### 6. Comprobar ruta verificar QR
+### "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sIjoiYWRtaW4iLCJpYXQiOjE3OTE1NjQxNDQsImV4cCI6MTc5MTU3MTM0NH0.yer-KT6WYw-Atys81pFhsCWTq9muBVhFkk8F1zaunbg"
+GET {{verificarUrl}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sIjoiYWRtaW4iLCJpYXQiOjE3OTE1NjQxNDQsImV4cCI6MTc5MTU3MTM0NH0.yer-KT6WYw-Atys81pFhsCWTq9muBVhFkk8F1zaunbg
+Content-Type: application/json
