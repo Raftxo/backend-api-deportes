@@ -42,3 +42,11 @@ export const esAdmin = (req, res, next) => {
        res.status(403).json({ error: 'Acceso prohibido. Se requiere rol de Administrador.' }); // 403 Forbidden
    }
 };
+
+export const tieneRol = (...rolesPermitidos) => (req, res, next) => {
+   if (req.usuario && rolesPermitidos.includes(req.usuario.rol)) {
+       next();
+   } else {
+       res.status(403).json({ error: 'Acceso prohibido. No tienes un rol permitido.' });
+   }
+};

@@ -32,6 +32,51 @@ router.get('/', getEspacios);           // Obtener todos
 
 // las demas rutas
 router.get('/:id', getEspacioById);      // Obtener uno por ID
+
+/**
+* @swagger
+* /api/espacios:
+*   post:
+*     summary: Crear un nuevo espacio deportivo (Solo Administradores)
+*     tags: [Espacios]
+*     security:
+*       - bearerAuth: []
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             required:
+*               - nombre
+*               - tipo
+*               - ubicacion
+*               - capacidad_maxima
+*             properties:
+*               nombre:
+*                 type: string
+*                 example: "Pista de Tenis"
+*               tipo:
+*                 type: string
+*                 example: "Tenis"
+*               ubicacion:
+*                 type: string
+*                 example: "Polideportivo Sur"
+*               capacidad_maxima:
+*                 type: integer
+*                 example: 4
+*               disponible:
+*                 type: integer
+*                 description: 1 para disponible, 0 para cerrado. Por defecto es 1.
+*                 example: 1
+*     responses:
+*       201:
+*         description: Espacio creado exitosamente
+*       400:
+*         description: Faltan campos obligatorios
+*       403:
+*         description: Acceso prohibido (No eres administrador)
+*/
 router.post('/',verificarToken, esAdmin, createEspacio);         // Crear= uno
 router.put('/:id', verificarToken, esAdmin,updateEspacio);       // Actualizar uno
 router.delete('/:id', verificarToken, esAdmin,deleteEspacio);    // Borrar uno
